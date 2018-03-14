@@ -14,11 +14,26 @@ docker pull mysql
 
 docker-compose up -d
 ```
-docker-compose can launch a mysql containner.
 
-database's name is mydb. root password is 123456789
 
-In user table, we got a default user :
+docker-compose.yml
+
+```YML
+dev_mysql:
+  image: mysql:latest
+  container_name: spring-mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=123456789
+    - MYSQL_DATABASE=mydb
+  ports:
+    - 3306:3306
+  volumes:
+    - ./db-dump-dev:/docker-entrypoint-initdb.d
+  restart: always
+```
+
+
+docker-compose can launch a mysql containner. database's name is mydb. root password is 123456789. In user table, we got a default user :
 
 username: lucas
 password: 1234
@@ -45,12 +60,11 @@ you will got a json response:
 ```
 {
 "jwttoken":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWNhcyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiZXhwIjoxNTIxODcyNDc4fQ.TGKxznoTQTEjTY82ilq9hF7-SeSOQZsKU_w505_2s1VuJTHrgZxqgtODKN3ELrjLrEEzqUeIgaJ0eioUm3wPDA"
-
 }
 ```
 
 ### Access Restrict API with Token 
-using jwt token to access ROLE_USER resource api 
+Put your jwt token into request header,and access ROLE_USER resource api 
 
 ```
  curl -H "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWNhcyIsInJvbGVzIjoiUk9MRV9VU0VSIiwiZXhwIjoxNTIxODcyNDc4fQ.TGKxznoTQTEjTY82ilq9hF7-SeSOQZsKU_w505_2s1VuJTHrgZxqgtODKN3ELrjLrEEzqUeIgaJ0eioUm3wPDA" localhost:8080/user/resources
