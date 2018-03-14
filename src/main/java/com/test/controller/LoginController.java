@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.test.model.Role;
 import com.test.model.User;
 import com.test.service.UserService;
 
@@ -24,7 +25,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @CrossOrigin(origins = "http://localhost", maxAge = 3600)
 @RestController
-@RequestMapping("/user")
 public class LoginController {
 
 	@Autowired
@@ -39,6 +39,14 @@ public class LoginController {
 			json.put("status", false);
 			return json.toString();
 		} 
+		
+		if ( Role.ROLE_ADMIN.equals(user.getRole()) == false || Role.ROLE_USER.equals(user.getRole()) == false  )
+		{
+			json.put("msg", "invalid role.");
+			json.put("status", false);
+			return json.toString();
+		}
+	
 		
 		userService.save(user);
 	
