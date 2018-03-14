@@ -52,7 +52,6 @@ Login to obtain token
 
 ```
 curl -d 'username=lucas&password=1234' http://localhost:8080/login
-
 ```
 
 you will got a json response:
@@ -97,7 +96,7 @@ Detail
 
 ### WebSecurityConfig
 
-```
+```JAVA
 @Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
